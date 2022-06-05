@@ -18,9 +18,31 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    pass
+    title = models.CharField(_('title'), max_length=50)
+    description = models.TextField(_('description'), blank=True)
+    avatar = models.ImageField(_('avatar'), blank=True, upload_to='products/')
+    is_enable = models.BooleanField(_('is_enable'), default=True)
+    categories = models.ManyToManyField('Category', verbose_name=_('categories'), blank=True)
+    create_date = models.DateTimeField(_('create_date'), auto_now_add=True)
+    updated_time = models.DateTimeField(_('updated_time'), auto_now_add=True)
+
+    class Meta:
+        db_table = 'products'
+        verbose_name = _('product')
+        verbose_name_plural = _('products')
 
 
 class File(models.Model):
-    pass
+    product = models.ForeignKey('product', verbose_name=_('product'), on_delete=models.CASCADE)
+    title = models.CharField(_('title'), max_length=50)
+    file = models.FileField(_('file'), upload_to='files/%Y/%m/%d/')
+    is_enable = models.BooleanField(_('is_enable'), default=True)
+    create_date = models.DateTimeField(_('create_date'), auto_now_add=True)
+    updated_time = models.DateTimeField(_('updated_time'), auto_now_add=True)
+
+    class Meta:
+        db_table = 'files'
+        verbose_name = _('file')
+        verbose_name_plural = _('files')
+
 
